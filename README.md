@@ -11,9 +11,10 @@ To start your Phoenix app:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-## Run distributed nodes locally (out of box)
+## Run distributed nodes locally (out of the box)
 
 Run each command in two separate terminal tabs:
+
 `bash
 PORT=4001 elixir --name n2@127.0.0.1 --erl "-config sys.config" -S mix phoenix.server
 elixir --name n1@127.0.0.1 --erl "-config sys.config" -S mix phoenix.server
