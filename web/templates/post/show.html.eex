@@ -1,0 +1,33 @@
+<h2>Post Show</h2>
+<hr />
+<div v-cloak data-behaviour="component" data-props="<%= Poison.encode!(%{ post: %{
+    title: @post.title,
+    body: @post.body,
+    url: post_path(@conn, :index),
+    id: @post.id
+}}) %>">
+  <div class="post">
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.body }}</p>
+    <a href="{{ post.url}}">return to posts</a>
+  </div>
+</div>
+
+<hr />
+
+<div v-cloak data-behaviour="component" data-props="<%= Poison.encode!(%{comments: Enum.map(@post.comments, fn comment -> %{
+  body: comment.body,
+  id: comment.id
+} end), newComment: %{body: ''} }) %>">
+
+  <p>Add comment</p>
+  <form v-on:submit.prevent="addComment">
+    <input v-model="newComment.body" />
+    <input type="hidden" v-model="newComment.post_id" value="<%= @post.id %>" />
+  </form>
+  <div class="comments">
+    <li v-for="comment in comments" track-by="id">
+      <p>{{ comment.body }}</p>
+    </li>
+  </div>
+</div>

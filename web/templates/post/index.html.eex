@@ -1,0 +1,17 @@
+<h2>Listing posts</h2>
+<hr />
+
+<div v-cloak data-behaviour="component" data-props="<%= Poison.encode!(%{posts: Enum.map(@posts, fn post -> %{
+  title: post.title,
+  body: post.body,
+  url: post_path(@conn, :show, post),
+  id: post.id
+} end)}) %>">
+  <ul>
+    <li v-for="post in posts" track-by="id">
+      <h3>{{ post.title }}</h3>
+      <p>{{ post.body }}</p>
+      <a href="{{ post.url}}">Go to post</a>
+    </li>
+  </ul>
+</div>
