@@ -1,6 +1,5 @@
 <h2>Listing posts</h2>
 <hr />
-
 <div v-cloak data-behaviour="component" data-props="<%= Poison.encode!(%{posts: Enum.map(@posts, fn post -> %{
   title: post.title,
   body: post.body,

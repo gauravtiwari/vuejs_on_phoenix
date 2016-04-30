@@ -13,13 +13,13 @@
   </div>
 </div>
 
+<h2>Comments</h2>
 <hr />
 
 <div v-cloak data-behaviour="component" data-props="<%= Poison.encode!(%{comments: Enum.map(@post.comments, fn comment -> %{
   body: comment.body,
   id: comment.id
 } end), newComment: %{body: ''} }) %>">
-
   <p>Add comment</p>
   <form v-on:submit.prevent="addComment">
     <input v-model="newComment.body" />
