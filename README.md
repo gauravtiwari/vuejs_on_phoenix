@@ -15,9 +15,11 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Run each command in two separate terminal tabs:
 
-`bash
+```bash
+# First node
 PORT=4001 elixir --name n2@127.0.0.1 --erl "-config sys.config" -S mix phoenix.server
+# Second node
 elixir --name n1@127.0.0.1 --erl "-config sys.config" -S mix phoenix.server
-`
+```
 
 Now, if any node goes down (just ctrl+c twice) you will see in the log the other app gets started automatically after timeout.
