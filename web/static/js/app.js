@@ -25,7 +25,7 @@ function mountComponents() {
             data: { comment: this.newComment },
             success: function(data, textStatus, xhr) {
               if (data) {
-                // Add it to top
+                // Add it to the top
                 this.comments.unshift({
                   body: data.body,
                   id: data.id
