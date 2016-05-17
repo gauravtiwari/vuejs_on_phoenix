@@ -1,6 +1,5 @@
 defmodule VuejsOnPhoenix.CommentController do
   use VuejsOnPhoenix.Web, :controller
-
   alias VuejsOnPhoenix.Comment
 
   plug :scrub_params, "comment" when action in [:create, :update]
@@ -15,6 +14,7 @@ defmodule VuejsOnPhoenix.CommentController do
 
     case Repo.insert(changeset) do
       {:ok, comment} ->
+        VuejsOnPhoenix.CommentsChannel.broadcast_comment(comment)
         conn
         |> put_status(:created)
         |> render("comment.json", comment: comment)

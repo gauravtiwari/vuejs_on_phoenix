@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf" content="<%= Plug.CSRFProtection.get_csrf_token() %>" />
+    <% Plug.Conn.assign(@conn, :current_user, :random.uniform(10)) %>
     <meta name="description" content="" />
     <meta name="author" content="" />
-
     <title>Hello VuejsOnPhoenix!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>" />
   </head>
@@ -31,6 +31,9 @@
       </main>
 
     </div> <!-- /container -->
+    <script type="text/javascript">
+      window.currentUserId = "<%= :random.uniform(10) %>";
+    </script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

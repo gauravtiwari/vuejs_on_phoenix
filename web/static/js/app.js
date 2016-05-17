@@ -5,24 +5,23 @@ import Vue from "vue";
 import $ from 'jquery';
 
 // Import local files
-// import socket from "./socket"
+import socket from "./socket"
 
 function mountComponents() {
   const components = document.querySelectorAll('[data-behaviour="component"]');
   for (let i = 0; i < components.length; i++) {
     const node = components[i]
     const props = JSON.parse(node.getAttribute('data-props'));
-
-    new Vue({
+    const $vue = new Vue({
       el: node,
       data: props,
       methods: {
         addComment: function() {
           $.ajax({
             type: 'post',
-            url: '/posts/' + this.newComment.post_id + '/comment',
+            url: '/posts/' + props.post_id + '/comment',
             dataType: 'json',
-            data: { comment: this.newComment },
+            data: { comment: { body: this.newComment.body, post_id: props.post_id } },
             success: function(data, textStatus, xhr) {
               if (data) {
                 // Add it to the top
@@ -34,14 +33,42 @@ function mountComponents() {
                 // Setup empty new comment object
                 this.newComment = {
                   body: '',
-                  post_id: this.newComment.post_id
+                  post_id: props.post_id
                 }
               }
             }.bind(this)
           })
         },
       }
-    })
+    });
+
+    if(props.post_id) {
+      const commentsChannel = `comments:${props.post_id}`;
+
+      const channel = socket.channel(
+        commentsChannel
+      );
+
+      channel.join()
+      .receive("ok", data => {
+        console.log("Joined comments channel for", commentsChannel);
+      })
+      .receive("error", resp => {
+        console.log("Unable to join comments channel for", commentsChannel);
+      });
+
+      console.log(parseInt(window.currentUserId) != socket.params.user_id);
+
+      channel.on('new_comment', comment => {
+        if(parseInt(window.currentUserId) != socket.params.user_id) {
+          $vue.$data.comments.unshift({
+            body: comment.body,
+            post_id: comment.post_id,
+            id: comment.id
+          });
+        }
+      });
+    }
   }
 }
 
@@ -50,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $.ajaxSetup({
     headers: { 'X-CSRF-TOKEN': document.querySelector("meta[name=csrf]").content }
   });
+
   if (!(typeof Turbolinks !== 'undefined')) {
     mountComponents();
   } else {
@@ -60,5 +88,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
-
-

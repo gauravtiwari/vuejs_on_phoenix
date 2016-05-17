@@ -19,9 +19,9 @@ defmodule VuejsOnPhoenix.ErrorHelpers do
   """
   def translate_error({msg, opts}) do
     if count = opts[:count] do
-      Gettext.dngettext(MyApp.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(VuejsOnPhoenix.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(MyApp.Gettext, "errors", msg, opts)
+      Gettext.dgettext(VuejsOnPhoenix.Gettext, "errors", msg, opts)
     end
   end
 

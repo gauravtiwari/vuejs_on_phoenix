@@ -19,11 +19,10 @@
 <div v-cloak data-behaviour="component" data-props="<%= Poison.encode!(%{comments: Enum.map(@post.comments, fn comment -> %{
   body: comment.body,
   id: comment.id
-} end), newComment: %{body: ''} }) %>">
+} end), newComment: %{body: ''}, post_id: @post.id }) %>">
   <p>Add comment</p>
   <form v-on:submit.prevent="addComment">
     <input v-model="newComment.body" />
-    <input type="hidden" v-model="newComment.post_id" value="<%= @post.id %>" />
   </form>
   <div class="comments">
     <li v-for="comment in comments" track-by="id">
