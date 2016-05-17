@@ -57,8 +57,6 @@ function mountComponents() {
         console.log("Unable to join comments channel for", commentsChannel);
       });
 
-      console.log(parseInt(window.currentUserId) != socket.params.user_id);
-
       channel.on('new_comment', comment => {
         if(parseInt(window.currentUserId) != socket.params.user_id) {
           $vue.$data.comments.unshift({
